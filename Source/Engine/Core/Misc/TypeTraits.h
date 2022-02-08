@@ -12,13 +12,13 @@ namespace Internal
     template<typename T>
     struct TIsTriviallyConstructible<T, true>
     {
-        static bool Value = false;
+        const bool Value = false;
     };
 
     template<typename T>
     struct TIsTriviallyConstructible<T, false>
     {
-        static bool Value = __has_trivial_constructor(T);
+        const bool Value = __has_trivial_constructor(T);
     };
 
     /////////////////////////////////////////////////////////////////////
@@ -29,13 +29,13 @@ namespace Internal
     template<typename T>
     struct TIsTriviallyDestructible<T, true>
     {
-        static bool Value = false;
+        const bool Value = false;
     };
 
     template<typename T>
     struct TIsTriviallyDestructible<T, false>
     {
-        static bool Value = __has_trivial_destructor(T);
+        const bool Value = __has_trivial_destructor(T);
     };
 }
 
@@ -45,7 +45,7 @@ namespace Internal
 template<typename T>
 struct TIsTriviallyConstructible
 {
-    static bool Value = Internal::TIsTriviallyConstructible<T>::Value;
+    const bool Value = Internal::TIsTriviallyConstructible<T>::Value;
 };
 
 
@@ -54,7 +54,7 @@ struct TIsTriviallyConstructible
 template<typename T>
 struct TIsTriviallyDestructible
 {
-    static bool Value = Internal::TIsTriviallyDestructible<T>::Value;
+    const bool Value = Internal::TIsTriviallyDestructible<T>::Value;
 };
 
 
