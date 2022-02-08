@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Source",
+    "\\Source\\Engine",
+    "\\Source\\Engine\\Core",
+    "\\Source\\Engine\\Core\\Math",
+    "\\Source\\Engine\\Core\\Memory",
+    "\\Source\\Engine\\Core\\Misc",
+    "\\Source\\Engine\\Core\\Platform",
+    "\\Source\\Engine\\Core\\Platform\\Base",
+    "\\Source\\Engine\\Core\\Platform\\Windows"
+  ],
+  "SelectedNode": "\\Source\\Engine\\Core\\Platform\\Base\\BasePlatformMemory.h",
+  "PreviewInSolutionExplorer": false
+}
