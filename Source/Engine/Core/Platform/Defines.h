@@ -24,7 +24,6 @@
 #  error "Titan requires at least C++ 14!"
 #endif
 
-
 /** Define and set missing macros */
 
 #ifndef PLATFORM_COMPILER_MSC

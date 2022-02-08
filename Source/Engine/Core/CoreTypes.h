@@ -19,6 +19,8 @@
 
 #define TITAN_DEBUG !TITAN_RELEASE
 
+#define DEFAULT_ALIGNMENT 16
+
 // TODO: Log ERROR
 #if TITAN_DEBUG
 #   define ASSERT(Condition, Message) \
