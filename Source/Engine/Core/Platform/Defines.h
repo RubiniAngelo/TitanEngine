@@ -1,7 +1,7 @@
 #pragma once
 
 #if _MSC_VER > 1800 // Required at least VS15
-#    include "MSC/MSCPlatform.h"
+#    include "MSC/MSCDefines.h"
 #elif __clang__
 #    error "Compiler not implemented yet!"
 #elif __GNUC__
@@ -9,9 +9,9 @@
 #endif
 
 #if _WIN32
-#   include "Windows/WindowsPlatform.h"
+#   include "Windows/WindowsDefines.h"
 #else
-#   error "Platform implementation is missing!"
+#   error "Defines implementation is missing!"
 #endif
 
 #if PLATFORM_LANG_VERSION == 202002L
