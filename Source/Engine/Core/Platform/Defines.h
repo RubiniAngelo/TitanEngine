@@ -41,6 +41,10 @@
 #   define PLATFORM_COMPILER_MSC 0
 #endif
 
+#ifndef PLATFORM_COMPILER_GCC
+#   define PLATFORM_COMPILER_GCC 0
+#endif
+
 #ifndef PLATFORM_WINDOWS
 #   define PLATFORM_WINDOWS 1
 #endif
