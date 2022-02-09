@@ -1,11 +1,22 @@
 #pragma once
 
+/** Undefine all macros that we're using */
+#undef FORCEINLINE
+#undef FORCENOINLINE
+#undef INLINE
+#undef CONSTEXPR
+#undef NOEXCEPT
+#undef NORETURN
+#undef RESTRICT
+#undef DLLEXPORT
+#undef DLLIMPORT
+
 #if _MSC_VER > 1800 // Required at least VS15
 #    include "MSC/MSCDefines.h"
 #elif __clang__
 #    error "Compiler not implemented yet!"
 #elif __GNUC__
-#    error "Compiler not implemented yet!"
+#    include "GCC/GCCDefines.h"
 #endif
 
 #if _WIN32
