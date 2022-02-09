@@ -20,13 +20,13 @@ public:
     }
 
     template<typename T>
-    FORCEINLINE static bool IsPowerOf2(const T& Value)
+    FORCEINLINE static bool IsPowerOf2(const T& Value) NOEXCEPT
     {
-        return Value == 0 ? false : (Value & (Value - 1)) == 0;
+        return Value <= 0 ? false : (Value & (Value - 1)) == 0;
     }
 
     template<typename T>
-    FORCEINLINE static T RoundTo2(const T& Value)
+    FORCEINLINE static T RoundTo2(const T& Value) NOEXCEPT
     {
         if (Value < 0)
             return 0;
