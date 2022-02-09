@@ -8,37 +8,37 @@ class TITAN_API Math
 {
 public:
     template<typename T, typename U>
-    FORCEINLINE static typename TSelectIf<T, U, (sizeof(T) >= sizeof(U))>::Value Max(T Lhs, U Rhs) NOEXCEPT
+    FORCEINLINE static typename TSelectIf<T, U, (sizeof(T) >= sizeof(U))>::Value Max(T lhs, U rhs) NOEXCEPT
     {
-        return (Lhs > Rhs) ? Lhs : Rhs;
+        return (lhs > rhs) ? lhs : rhs;
     }
 
     template<typename T, typename U>
-    FORCEINLINE static typename TSelectIf<T, U, sizeof(T) >= sizeof(U)>::Value Min(T Lhs, U Rhs) NOEXCEPT
+    FORCEINLINE static typename TSelectIf<T, U, sizeof(T) >= sizeof(U)>::Value Min(T Lhs, U rhs) NOEXCEPT
     {
-        return (Lhs < Rhs) ? Lhs : Rhs;
+        return (lhs < rhs) ? lhs : rhs;
     }
 
     template<typename T>
-    FORCEINLINE static bool IsPowerOf2(const T& Value) NOEXCEPT
+    FORCEINLINE static bool IsPowerOf2(const T& value) NOEXCEPT
     {
-        return Value <= 0 ? false : (Value & (Value - 1)) == 0;
+        return value <= 0 ? false : (value & (value - 1)) == 0;
     }
 
     template<typename T>
-    FORCEINLINE static T RoundTo2(const T& Value) NOEXCEPT
+    FORCEINLINE static T RoundTo2(const T& value) NOEXCEPT
     {
-        if (Value < 0)
+        if (value < 0)
             return 0;
 
-        T Temp = Value - 1;
+        T temp = value - 1;
 
-        Temp |= Temp >> 1;
-        Temp |= Temp >> 2;
-        Temp |= Temp >> 4;
-        Temp |= Temp >> 8;
-        Temp |= Temp >> 16;
+        temp |= temp >> 1;
+        temp |= temp >> 2;
+        temp |= temp >> 4;
+        temp |= temp >> 8;
+        temp |= temp >> 16;
 
-        return Temp + 1;
+        return temp + 1;
     }
 };

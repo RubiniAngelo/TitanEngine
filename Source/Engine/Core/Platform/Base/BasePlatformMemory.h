@@ -7,19 +7,19 @@
 class TITAN_API BasePlatformMemory
 {
 public:
-    FORCEINLINE static void* Allocate(const TSize Size, const TSize Alignment) = delete;
-    FORCEINLINE static void  Free(void* Pointer) = delete;
+    FORCEINLINE static void* Allocate(const TSize size, const TSize alignment) = delete;
+    FORCEINLINE static void  Free(void* ptr) = delete;
 
 public:
-    FORCEINLINE static void* Copy(const void* From, void* To, const TSize Size)
+    FORCEINLINE static void* Copy(const void* source, void* target, const TSize size)
     {
-        ASSERT(Size > 0, "The size must be greater than 0!");
-        return memcpy(To, From, Size);
+        ASSERT(InSize > 0, "The size must be greater than 0!");
+        return memcpy(target, source, InSize);
     }
 
-    FORCEINLINE static void* Move(const void* From, void* To, const TSize Size)
+    FORCEINLINE static void* Move(const void* source, void* target, const TSize size)
     {
-        ASSERT(Size > 0, "The size must be greater than 0!");
-        return memmove(To, From, Size);
+        ASSERT(size > 0, "The size must be greater than 0!");
+        return memmove(target, source, size);
     }
 };

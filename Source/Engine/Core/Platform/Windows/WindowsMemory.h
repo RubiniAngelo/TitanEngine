@@ -9,17 +9,17 @@ class TITAN_API WindowsMemory final : public BasePlatformMemory
 {
 public:
     /** Allocates memory on a specified alignment boundary */
-    FORCEINLINE static void* Allocate(const TSize Size, const TSize Alignment)
+    FORCEINLINE static void* Allocate(const TSize size, const TSize alignment)
     {
-        ASSERT(Math::IsPowerOf2(Alignment), "The alignment must be a power of two!");
-        return _aligned_malloc(Size, Alignment);
+        ASSERT(Math::IsPowerOf2(alignment), "The alignment must be a power of two!");
+        return _aligned_malloc(size, alignment);
     }
 
     /** Frees a block of memory that was allocated */
-    FORCEINLINE static void Free(void* Pointer)
+    FORCEINLINE static void Free(void* ptr)
     {
-        ASSERT(Pointer != nullptr, "The pointer is nullptr!");
-        return _aligned_free(Pointer);
+        ASSERT(ptr != nullptr, "The pointer is nullptr!");
+        return _aligned_free(ptr);
     }
 };
 
