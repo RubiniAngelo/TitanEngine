@@ -18,5 +18,5 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-    ${SOURCE_DIR}/Core/Platform
+    ${SOURCE_DIR}/Core
 )

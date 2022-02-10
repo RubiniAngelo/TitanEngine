@@ -6,36 +6,36 @@
 
 namespace Internal
 {
-    template<typename T, bool IsDestructible = __is_enum(T)>
+    template<typename T, bool bIsDestructible = __is_enum(T)>
     struct TIsTriviallyConstructible;
 
     template<typename T>
     struct TIsTriviallyConstructible<T, true>
     {
-        const bool Value = false;
+        enum { Value = false; };
     };
 
     template<typename T>
     struct TIsTriviallyConstructible<T, false>
     {
-        const bool Value = __has_trivial_constructor(T);
+        enum { Value = __has_trivial_constructor(T); };
     };
 
     /////////////////////////////////////////////////////////////////////
 
-    template<typename T, bool IsDestructible = __is_enum(T)>
+    template<typename T, bool bIsDestructible = __is_enum(T)>
     struct TIsTriviallyDestructible;
 
     template<typename T>
     struct TIsTriviallyDestructible<T, true>
     {
-        const bool Value = false;
+        enum { Value = false; };
     };
 
     template<typename T>
     struct TIsTriviallyDestructible<T, false>
     {
-        const bool Value = __has_trivial_destructor(T);
+        enum { Value = __has_trivial_destructor(T); };
     };
 }
 
@@ -45,7 +45,7 @@ namespace Internal
 template<typename T>
 struct TIsTriviallyConstructible
 {
-    const bool Value = Internal::TIsTriviallyConstructible<T>::Value;
+    enum { Value = Internal::TIsTriviallyConstructible<T>::Value; };
 };
 
 
@@ -54,7 +54,7 @@ struct TIsTriviallyConstructible
 template<typename T>
 struct TIsTriviallyDestructible
 {
-    const bool Value = Internal::TIsTriviallyDestructible<T>::Value;
+    enum { Value = Internal::TIsTriviallyDestructible<T>::Value; };
 };
 
 
@@ -62,7 +62,7 @@ struct TIsTriviallyDestructible
 
 // Relies on SFINAE
 
-template<bool Expression, typename Result = void>
+template<bool bExpression, typename Result = void>
 struct TEnableIf;
 
 template<typename Result>
@@ -77,7 +77,7 @@ struct TEnableIf<true, Result>
 
 /////////////////////////////////////////////////////////////////////
 
-template<typename T, typename U, bool Expression>
+template<typename T, typename U, bool bExpression>
 struct TSelectIf;
 
 template<typename T, typename U>

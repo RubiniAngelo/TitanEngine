@@ -1,19 +1,19 @@
 #pragma once
 
-#include "Core/CoreTypes.h"
+#include "CoreTypes.h"
 
 #include <memory.h>
 
 class TITAN_API BasePlatformMemory
 {
 public:
-    FORCEINLINE static void* Allocate(const TSize size, const TSize alignment) = delete;
-    FORCEINLINE static void  Free(void* ptr) = delete;
+    FORCEINLINE static void* Allocate(const TSize Size, const uint8 Alignment) = delete;
+    FORCEINLINE static void  Free(void* Pointer) = delete;
 
 public:
-    FORCEINLINE static void* Copy(const void* source, void* target, const TSize size)
+    FORCEINLINE static void* Copy(const void* InSource, void* OutTarget, const TSize Size)
     {
-        ASSERT(size > 0, "The size must be greater than 0!");
-        return memcpy(target, source, size);
+        ASSERT(Size > 0, "The size must be greater than 0!");
+        return memcpy(OutTarget, Source, Size);
     }
 };

@@ -24,5 +24,4 @@ void StopProfiling()
 
 int main()
 {
-
 }
