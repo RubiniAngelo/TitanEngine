@@ -14,7 +14,7 @@ public:
     }
 
     template<typename T, typename U>
-    FORCEINLINE static typename TSelectIf<T, U, sizeof(T) >= sizeof(U)>::Value Min(T Lhs, U rhs) NOEXCEPT
+    FORCEINLINE static typename TSelectIf<T, U, sizeof(T) >= sizeof(U)>::Value Min(T lhs, U rhs) NOEXCEPT
     {
         return (lhs < rhs) ? lhs : rhs;
     }
