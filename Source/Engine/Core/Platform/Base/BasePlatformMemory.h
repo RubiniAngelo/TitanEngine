@@ -13,13 +13,7 @@ public:
 public:
     FORCEINLINE static void* Copy(const void* source, void* target, const TSize size)
     {
-        ASSERT(InSize > 0, "The size must be greater than 0!");
-        return memcpy(target, source, InSize);
-    }
-
-    FORCEINLINE static void* Move(const void* source, void* target, const TSize size)
-    {
         ASSERT(size > 0, "The size must be greater than 0!");
-        return memmove(target, source, size);
+        return memcpy(target, source, size);
     }
 };
