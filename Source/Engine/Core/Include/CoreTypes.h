@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Platform/Defines.h"
-#include "Misc/BasicTypes.h"
+#include "Traits/Traits.h"
+#include "Types/BasicTypes.h"
 
 #if TITAN_EXPORT
 #   define TITAN_API DLLEXPORT

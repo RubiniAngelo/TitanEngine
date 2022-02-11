@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TypeTraits.h"
+#include "Traits/SelectIf.h"
 
 /*  8-bit signed integer. */
 typedef char                            int8;
