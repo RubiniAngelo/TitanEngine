@@ -8,8 +8,8 @@ class TITAN_API TArray
 {
 public:
 	TArray();
-	TArray(const TSize Size);
-	TArray(const TArray<T>& Other)
+	TArray(const TSize size);
+	TArray(const TArray<T, AllocatorType>& other)
 	{
 
 	}

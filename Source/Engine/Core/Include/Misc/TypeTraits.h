@@ -6,7 +6,7 @@
 
 namespace Internal
 {
-    template<typename T, bool bIsDestructible = __is_enum(T)>
+    template<typename T, bool IsDestructible = __is_enum(T)>
     struct TIsTriviallyConstructible;
 
     template<typename T>
@@ -18,12 +18,12 @@ namespace Internal
     template<typename T>
     struct TIsTriviallyConstructible<T, false>
     {
-        enum { Value = __has_trivial_constructor(T); };
+        enum { Value = __has_trivial_constructor(T) };
     };
 
     /////////////////////////////////////////////////////////////////////
 
-    template<typename T, bool bIsDestructible = __is_enum(T)>
+    template<typename T, bool IsDestructible = __is_enum(T)>
     struct TIsTriviallyDestructible;
 
     template<typename T>
@@ -35,7 +35,7 @@ namespace Internal
     template<typename T>
     struct TIsTriviallyDestructible<T, false>
     {
-        enum { Value = __has_trivial_destructor(T); };
+        enum { Value = __has_trivial_destructor(T) };
     };
 }
 
@@ -45,7 +45,7 @@ namespace Internal
 template<typename T>
 struct TIsTriviallyConstructible
 {
-    enum { Value = Internal::TIsTriviallyConstructible<T>::Value; };
+    enum { Value = Internal::TIsTriviallyConstructible<T>::Value };
 };
 
 
@@ -54,7 +54,7 @@ struct TIsTriviallyConstructible
 template<typename T>
 struct TIsTriviallyDestructible
 {
-    enum { Value = Internal::TIsTriviallyDestructible<T>::Value; };
+    enum { Value = Internal::TIsTriviallyDestructible<T>::Value };
 };
 
 
@@ -62,7 +62,7 @@ struct TIsTriviallyDestructible
 
 // Relies on SFINAE
 
-template<bool bExpression, typename Result = void>
+template<bool Condition, typename Result = void> 
 struct TEnableIf;
 
 template<typename Result>
@@ -77,7 +77,7 @@ struct TEnableIf<true, Result>
 
 /////////////////////////////////////////////////////////////////////
 
-template<typename T, typename U, bool bExpression>
+template<typename T, typename U, bool Condition>
 struct TSelectIf;
 
 template<typename T, typename U>
@@ -90,4 +90,14 @@ template<typename T, typename U>
 struct TSelectIf<T, U, false>
 {
     typedef U Value;
+};
+
+/////////////////////////////////////////////////////////////////////
+
+// Check if the type is a pod (plain old data structure, i.e. structs or classes that only have variables)
+
+template<typename T>
+struct TIsPOD
+{
+    enum { Value = __is_pod(T) || __is_enum(T) };
 };
