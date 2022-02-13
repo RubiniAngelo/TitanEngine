@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Platform/Defines.h"
-#include "Traits/Traits.h"
+#include "TypeTraits/TypeTraits.h"
 #include "Types/BasicTypes.h"
 
 #if TITAN_EXPORT

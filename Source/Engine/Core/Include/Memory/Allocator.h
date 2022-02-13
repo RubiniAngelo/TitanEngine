@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreTypes.h"
+#include "MemoryUtils.h"
 #include "Platform/Memory.h"
 #include "Containers/Array.h"
 
@@ -21,7 +22,7 @@ public:
 
     FORCEINLINE void Destruct(T* ptr)
     {
-
+        MemoryUtils::DestructItem(ptr);
     }
 
     FORCEINLINE void Free(T* ptr)
