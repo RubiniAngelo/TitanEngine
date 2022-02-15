@@ -1,2 +1,2 @@
 # TitanEngine
-Another custom game engine (WIP)
+Another custom c++ game engine (WIP) 

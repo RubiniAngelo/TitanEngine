@@ -14,11 +14,11 @@
 
 // TODO Rework this
 
-#if !defined(TITAN_RELEASE)
-#   define TITAN_RELEASE 0
+#if !defined(TITAN_RELEASE_BUILD)
+#   define TITAN_RELEASE_BUILD 0
 #endif
 
-#define TITAN_DEBUG !TITAN_RELEASE
+#define TITAN_DEBUG_BUILD !TITAN_RELEASE_BUILD
 
 #define DEFAULT_ALIGNMENT 16
 

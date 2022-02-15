@@ -4,23 +4,22 @@
 
 // TODO: Comment this
 
-class TITAN_API Math
+namespace Math
 {
-public:
     template<typename T, typename U>
-    FORCEINLINE static typename TSelectIf<T, U, (sizeof(T) >= sizeof(U))>::Value Max(const T& lhs, const U& rhs) NOEXCEPT
+    FORCEINLINE CONSTEXPR static typename TSelectIf<T, U, (sizeof(T) >= sizeof(U))>::Value Max(const T& lhs, const U& rhs) NOEXCEPT
     {
         return (lhs > rhs) ? lhs : rhs;
     }
 
     template<typename T, typename U>
-    FORCEINLINE static typename TSelectIf<T, U, sizeof(T) >= sizeof(U)>::Value Min(const T& lhs, const U& rhs) NOEXCEPT
+    FORCEINLINE CONSTEXPR static typename TSelectIf<T, U, sizeof(T) >= sizeof(U)>::Value Min(const T& lhs, const U& rhs) NOEXCEPT
     {
         return (lhs < rhs) ? lhs : rhs;
     }
 
     template<typename T>
-    FORCEINLINE static bool IsPowerOf2(const T& value) NOEXCEPT
+    FORCEINLINE CONSTEXPR static bool IsPowerOf2(const T& value) NOEXCEPT
     {
         return value <= 0 ? false : (value & (value - 1)) == 0;
     }
@@ -41,4 +40,4 @@ public:
 
         return temp + 1;
     }
-};
+}
