@@ -2,7 +2,7 @@
 
 #include "Platform/Defines.h"
 #include "TypeTraits/TypeTraits.h"
-#include "Types/BasicTypes.h"
+#include "Misc/BasicTypes.h"
 
 #if TITAN_EXPORT
 #   define TITAN_API DLLEXPORT
@@ -23,12 +23,20 @@
 #define DEFAULT_ALIGNMENT 16
 
 // TODO: Log ERROR
-#if TITAN_DEBUG
+#if TITAN_DEBUG_BUILD
 #   define ASSERT(Condition, Message) \
         if(!(Condition)) \
         { \
             PLATFORM_DEBUG_BREAK; \
         }
+
+#   define ASSERT(Condition) \
+        if (!(Condition)) \
+        { \
+            PLATFORM_DEBUG_BREAK; \
+        }
+
 #else
 #   define ASSERT(Condition, Message)
+#   define ASSERT(Condition)
 #endif

@@ -7,25 +7,25 @@
 namespace Math
 {
     template<typename T, typename U>
-    FORCEINLINE CONSTEXPR static typename TSelectIf<T, U, (sizeof(T) >= sizeof(U))>::Value Max(const T& lhs, const U& rhs) NOEXCEPT
+    FORCEINLINE CONSTEXPR typename TSelectIf<T, U, (sizeof(T) >= sizeof(U))>::Value Max(const T& lhs, const U& rhs) NOEXCEPT
     {
         return (lhs > rhs) ? lhs : rhs;
     }
 
     template<typename T, typename U>
-    FORCEINLINE CONSTEXPR static typename TSelectIf<T, U, sizeof(T) >= sizeof(U)>::Value Min(const T& lhs, const U& rhs) NOEXCEPT
+    FORCEINLINE CONSTEXPR typename TSelectIf<T, U, sizeof(T) >= sizeof(U)>::Value Min(const T& lhs, const U& rhs) NOEXCEPT
     {
         return (lhs < rhs) ? lhs : rhs;
     }
 
     template<typename T>
-    FORCEINLINE CONSTEXPR static bool IsPowerOf2(const T& value) NOEXCEPT
+    FORCEINLINE CONSTEXPR bool IsPowerOf2(const T& value) NOEXCEPT
     {
         return value <= 0 ? false : (value & (value - 1)) == 0;
     }
 
     template<typename T>
-    FORCEINLINE static T RoundToPowerOf2(const T& value) NOEXCEPT
+    FORCEINLINE T RoundToPowerOf2(const T& value) NOEXCEPT
     {
         if (value < 0)
             return 0;

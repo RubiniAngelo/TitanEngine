@@ -16,6 +16,11 @@ public:
         return (T*)Memory::Allocate(count * sizeof(T), alignment);
     }
 
+    FORCEINLINE void Free(T* ptr)
+    {
+        Memory::Free(ptr);
+    }
+
     template<typename... ArgsType>
     FORCEINLINE void Construct(T* ptr, ArgsType... args)
     {
@@ -25,10 +30,5 @@ public:
     FORCEINLINE void Destruct(T* ptr)
     {
         MemoryUtils::DestructItem(ptr);
-    }
-
-    FORCEINLINE void Free(T* ptr)
-    {
-        Memory::Free(ptr);
     }
 };
