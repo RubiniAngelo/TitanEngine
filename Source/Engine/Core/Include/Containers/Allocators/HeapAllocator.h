@@ -20,15 +20,4 @@ public:
     {
         Memory::Free(ptr);
     }
-
-    template<typename... ArgsType>
-    FORCEINLINE void Construct(T* ptr, ArgsType... args)
-    {
-        MemoryUtils::ConstructItem(ptr, args...);
-    }
-
-    FORCEINLINE void Destruct(T* ptr)
-    {
-        MemoryUtils::DestructItem(ptr);
-    }
 };

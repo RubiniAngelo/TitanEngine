@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Misc/BasicTypes.h"
+
 namespace Private
 {
 	template<typename T, bool IsEnum = __is_enum(T)>

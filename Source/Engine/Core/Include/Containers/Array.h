@@ -9,19 +9,25 @@ class TITAN_API TArray
 public:
 	TArray() : m_Capacity(0), m_Count(0)
 	{
-
+		m_Data = nullptr;
 	}
 
 	~TArray()
 	{
-		m_Allocator.Free(m_Data);
+		if (m_Data)
+		{
+			MemoryUtils::DestructItems(m_Data, m_Count);
+			m_Allocator.Free(m_Data);
+			m_Data = nullptr;
+		}
 	}
 
 public:
 	FORCEINLINE void Add(const T& item)
 	{
 		EnsureLength(1);
-		m_Data[m_Count++] = item;
+		MemoryUtils::ConstructItems(&item, m_Data + m_Count, 1);
+		m_Count++;
 	}
 
 	FORCEINLINE void AddRange(const T* items, const int32 count)
@@ -29,7 +35,7 @@ public:
 		ASSERT(count >= 0 && items != nullptr);
 
 		EnsureLength(count);
-		Memory::Copy(items, m_Data + m_Count, count * sizeof(T));
+		MemoryUtils::ConstructItems(items, m_Data + m_Count, count);
 		m_Count += count;
 	}
 
@@ -49,7 +55,7 @@ public:
 
 	FORCEINLINE void Reserve(const int32 count)
 	{
-		// TODO: Implement this
+		EnsureLength(count);
 	}
 
 	FORCEINLINE T Get(const int32 index) const
@@ -70,16 +76,16 @@ public:
 
 private:
 
-	FORCEINLINE void EnsureLength(const int32 count)
+	FORCEINLINE void EnsureLength(const int32 count, bool shouldConstruct = true)
 	{
 		if (m_Count + count >= m_Capacity)
 		{
 			const int32 totalCount = Math::Max(m_Capacity * 4, Math::RoundToPowerOf2(m_Count + count));
 			T* newArray = m_Allocator.Allocate(totalCount);
 
-			if (m_Count)
+			if (m_Data)
 			{
-				Memory::Copy(m_Data, newArray, totalCount * sizeof(T));
+				MemoryUtils::MoveItems(m_Data, newArray, totalCount);
 				m_Allocator.Free(m_Data);
 			}
 
