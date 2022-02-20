@@ -12,6 +12,38 @@ public:
 		m_Data = nullptr;
 	}
 
+	TArray(const int32 capacity) : m_Capacity(capacity), m_Count(0)
+	{
+		Assert(capacity >= 0);
+
+		if (capacity > 0)
+		{
+			m_Data = m_Allocator.Allocate(other.m_Capacity);
+		}
+	}
+
+	TArray(const T* data, const int32 count) : m_Capacity(0), m_Count(count)
+	{
+		Assert(count >= 0);
+
+		m_Data = nullptr;
+
+		if (count > 0)
+		{
+			EnsureLength(count);
+			MemoryUtils::ConstructItems(data, m_Data, count);
+		}
+	}
+
+	TArray(const TArray& other) : m_Capacity(other.m_Capacity), m_Count(other.m_Count)
+	{
+		if (other.m_Capacity > 0)
+		{
+			m_Data = m_Allocator.Allocate(other.m_Capacity);
+			MemoryUtils::ConstructItems(other.m_Data, m_Data, other.m_Count);
+		}
+	}
+
 	~TArray()
 	{
 		if (m_Data)
@@ -32,7 +64,7 @@ public:
 
 	FORCEINLINE void AddRange(const T* items, const int32 count)
 	{
-		ASSERT(count >= 0 && items != nullptr);
+		Assert(count >= 0 && items != nullptr);
 
 		EnsureLength(count);
 		MemoryUtils::ConstructItems(items, m_Data + m_Count, count);
@@ -41,42 +73,53 @@ public:
 
 	FORCEINLINE void Remove(const int32 index)
 	{
-		ASSERT(index >= 0 && index < m_Count);
+		Assert(index >= 0 && index < m_Count);
 
-		// TODO: Implement this
+		MemoryUtils::DestructItem(m_Data + index);
+		Memory::Copy(m_Data + index + 1, m_Data + index, (m_Count - 1) - index);
+
+		m_Count--;
 	}
 
 	FORCEINLINE void RemoveRange(const int32 start, const int32 end)
 	{
-		ASSERT((start >= 0  && start < end) && (end >= 0 && end < m_Count));
+		Assert(start >= 0 && end >= 0 && start < end && end < m_Count);
 
-		// TODO: Implement this
+		const int32 count = end - start;
+
+		MemoryUtils::DestructItems(m_Data + start, count);
+		MemoryUtils::CopyItems(m_Data + end, m_Data + start, count);
+
+		m_Count -= count;
 	}
 
 	FORCEINLINE void Reserve(const int32 count)
 	{
+		Assert(count >= 0);
 		EnsureLength(count);
 	}
 
 	FORCEINLINE T Get(const int32 index) const
 	{ 
-		ASSERT(index >= 0 && index < m_Count);
+		Assert(index >= 0 && index < m_Count);
 		return m_Data[index]; 
 	}
 
-	FORCEINLINE const int32 GetCapacity() const 
+	FORCEINLINE int32 GetCapacity() const 
 	{ 
 		return m_Capacity; 
 	}
 
-	FORCEINLINE const int32 GetCount() const 
+	FORCEINLINE int32 GetCount() const 
 	{ 
 		return m_Count;
 	}
 
-private:
+public:
+	// TODO: Implements operators 
 
-	FORCEINLINE void EnsureLength(const int32 count, bool shouldConstruct = true)
+private:
+	FORCEINLINE void EnsureLength(const int32 count)
 	{
 		if (m_Count + count >= m_Capacity)
 		{
@@ -85,7 +128,7 @@ private:
 
 			if (m_Data)
 			{
-				MemoryUtils::MoveItems(m_Data, newArray, totalCount);
+				MemoryUtils::CopyItems(m_Data, newArray, totalCount);
 				m_Allocator.Free(m_Data);
 			}
 
@@ -93,7 +136,6 @@ private:
 			m_Capacity = totalCount;
 		}
 	}
-
 
 private:
 	AllocatorType m_Allocator;

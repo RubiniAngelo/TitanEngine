@@ -26,9 +26,6 @@ typedef unsigned int                    uint32;
 /* 64-bit unsigned integer. */
 typedef unsigned long long              uint64;
 
-/* 16-bit unicode character. */
-typedef TSelectIf<wchar_t, char16_t, sizeof(wchar_t) == 2>::Value       TChar;
-
 /* Unsigned int. Same size as a pointer. */
 typedef TSelectIf<uint32, uint64, sizeof(void*) == 4>::Value            UINTPTR;
 
@@ -50,8 +47,6 @@ static_assert(sizeof(uint8) == 1,   "The size of 'uint8' is wrong!");
 static_assert(sizeof(uint16) == 2,  "The size of 'uint16' is wrong!");
 static_assert(sizeof(uint32) == 4,  "The size of 'uint32' is wrong!");
 static_assert(sizeof(uint64) == 8,  "The size of 'uint64' is wrong!");
-
-static_assert(sizeof(TChar) == 2,    "The size of 'Char' is wrong!");
 
 static_assert(sizeof(UINTPTR) == sizeof(void*), "The size of 'UINTPTR' is wrong!");
 static_assert(sizeof(INTPTR) == sizeof(void*),  "The size of 'INTPTR' is wrong!");

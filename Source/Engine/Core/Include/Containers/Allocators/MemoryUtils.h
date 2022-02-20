@@ -60,18 +60,16 @@ namespace MemoryUtils
 	template<typename T>
 	FORCEINLINE typename TEnableIf< !TIsTriviallyDestructible<T>::Value >::Type DestructItems(T* items, uint32 count)
 	{
-		T* tempItems = items;
-
 		while (count--)
 		{
-			delete *tempItems++;
+			(items++)->~T();
 		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	template<typename T>
-	FORCEINLINE void MoveItems(const T* source, T* destination, uint32 count)
+	FORCEINLINE void CopyItems(const T* source, T* destination, uint32 count)
 	{
 		Memory::Copy(source, destination, count * sizeof(T));
 	}

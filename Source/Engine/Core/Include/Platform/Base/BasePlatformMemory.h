@@ -13,7 +13,7 @@ public:
 public:
     FORCEINLINE static void* Copy(const void* source, void* destination, const TSize size)
     {
-        ASSERT(size > 0, "The size must be greater than 0!");
+        AssertMsg(size > 0, "The size must be greater than 0!");
         return memcpy(destination, source, size);
     }
 };

@@ -24,19 +24,19 @@
 
 // TODO: Log ERROR
 #if TITAN_DEBUG_BUILD
-#   define ASSERT(Condition, Message) \
+#   define AssertMsg(Condition, Message) \
         if(!(Condition)) \
         { \
             PLATFORM_DEBUG_BREAK; \
         }
 
-#   define ASSERT(Condition) \
+#   define Assert(Condition) \
         if (!(Condition)) \
         { \
             PLATFORM_DEBUG_BREAK; \
         }
 
 #else
-#   define ASSERT(Condition, Message)
-#   define ASSERT(Condition)
+#   define AssertMsg(Condition, Message)
+#   define Assert(Condition)
 #endif
