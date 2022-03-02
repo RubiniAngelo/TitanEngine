@@ -9,9 +9,8 @@ class TITAN_API WindowsMemory final : public BasePlatformMemory
 {
 public:
     /** Allocates memory on a specified alignment boundary */
-    FORCEINLINE static void* Allocate(const TSize size, const uint8 alignment)
+    FORCEINLINE static void* Allocate(const Size size, const uint8 alignment)
     {
-        AssertMsg(size > 0, "The size must be greater than 0!");
         AssertMsg(Math::IsPowerOf2(alignment), "The alignment must be a power of two!");
         return _aligned_malloc(size, alignment);
     }

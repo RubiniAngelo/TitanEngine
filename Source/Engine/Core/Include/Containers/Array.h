@@ -6,32 +6,30 @@
 template<typename T, typename AllocatorType = THeapAllocator<T>>
 class TITAN_API TArray
 {
+	using SizeType = typename AllocatorType::SizeType;
+
 public:
 	TArray() : m_Capacity(0), m_Count(0)
 	{
-		m_Data = nullptr;
+
 	}
 
-	TArray(const int32 capacity) : m_Capacity(capacity), m_Count(0)
+	TArray(const SizeType capacity) : m_Capacity(capacity), m_Count(0)
 	{
-		Assert(capacity >= 0);
-
 		if (capacity > 0)
 		{
-			m_Data = m_Allocator.Allocate(other.m_Capacity);
+			m_Allocator.Allocate(capacity);
 		}
 	}
 
-	TArray(const T* data, const int32 count) : m_Capacity(0), m_Count(count)
+	TArray(const T* data, const SizeType count) : m_Capacity(0), m_Count(count)
 	{
-		Assert(count >= 0);
-
-		m_Data = nullptr;
+		Assert(data != nullptr);
 
 		if (count > 0)
 		{
 			EnsureLength(count);
-			MemoryUtils::ConstructItems(data, m_Data, count);
+			MemoryUtils::ConstructItems(data, m_Allocator.GetData(), count);
 		}
 	}
 
@@ -39,18 +37,16 @@ public:
 	{
 		if (other.m_Capacity > 0)
 		{
-			m_Data = m_Allocator.Allocate(other.m_Capacity);
-			MemoryUtils::ConstructItems(other.m_Data, m_Data, other.m_Count);
+			m_Allocator.Allocate(other.m_Capacity);
+			MemoryUtils::ConstructItems(other.m_Allocator.GetData(), m_Allocator.GetData(), other.m_Count);
 		}
 	}
 
 	~TArray()
 	{
-		if (m_Data)
+		if (m_Allocator.IsAllocated())
 		{
-			MemoryUtils::DestructItems(m_Data, m_Count);
-			m_Allocator.Free(m_Data);
-			m_Data = nullptr;
+			MemoryUtils::DestructItems(m_Allocator.GetData(), m_Count);
 		}
 	}
 
@@ -58,89 +54,125 @@ public:
 	FORCEINLINE void Add(const T& item)
 	{
 		EnsureLength(1);
-		MemoryUtils::ConstructItems(&item, m_Data + m_Count, 1);
+		MemoryUtils::ConstructItem(&item, m_Allocator.GetData() + m_Count);
 		m_Count++;
 	}
 
-	FORCEINLINE void AddRange(const T* items, const int32 count)
+	FORCEINLINE void AddRange(const T* items, const SizeType count)
 	{
-		Assert(count >= 0 && items != nullptr);
+		Assert(items != nullptr);
 
-		EnsureLength(count);
-		MemoryUtils::ConstructItems(items, m_Data + m_Count, count);
-		m_Count += count;
+		if (count > 0)
+		{
+			EnsureLength(count);
+			MemoryUtils::ConstructItems(items, m_Allocator.GetData() + m_Count, count);
+			m_Count += count;
+		}
 	}
 
-	FORCEINLINE void Remove(const int32 index)
+	FORCEINLINE void Remove(const SizeType index)
 	{
-		Assert(index >= 0 && index < m_Count);
+		AssertMsg(index >= 0 && index < m_Count, "The index exceeds the size of the array!");
 
-		MemoryUtils::DestructItem(m_Data + index);
-		Memory::Copy(m_Data + index + 1, m_Data + index, (m_Count - 1) - index);
+		const T* data = m_Allocator.GetData();
+		MemoryUtils::DestructItem(data + index);
+		MemoryUtils::CopyItems(data + index + 1, data + index, (m_Count - 1) - index);
 
 		m_Count--;
 	}
 
-	FORCEINLINE void RemoveRange(const int32 start, const int32 end)
+	FORCEINLINE void RemoveRange(const SizeType start, const SizeType end)
 	{
 		Assert(start >= 0 && end >= 0 && start < end && end < m_Count);
 
-		const int32 count = end - start;
+		const T* data = m_Allocator.GetData();
+		const SizeType count = end - start;
 
-		MemoryUtils::DestructItems(m_Data + start, count);
-		MemoryUtils::CopyItems(m_Data + end, m_Data + start, count);
+		MemoryUtils::DestructItems(data + start, count);
+		MemoryUtils::CopyItems(data + end, data + start, count);
 
 		m_Count -= count;
 	}
 
-	FORCEINLINE void Reserve(const int32 count)
+	FORCEINLINE void Reserve(const SizeType count)
 	{
 		Assert(count >= 0);
+
 		EnsureLength(count);
 	}
 
-	FORCEINLINE T Get(const int32 index) const
+public:
+	FORCEINLINE T& ElementAt(const SizeType index)
 	{ 
 		Assert(index >= 0 && index < m_Count);
-		return m_Data[index]; 
+
+		return *(m_Allocator.GetData() + index);
 	}
 
-	FORCEINLINE int32 GetCapacity() const 
-	{ 
+	FORCEINLINE const T& ElementAt(const SizeType index) const
+	{
+		Assert(index >= 0 && index < m_Count);
+
+		return *(m_Allocator.GetData() + index);
+	}
+
+	FORCEINLINE SizeType GetCapacity() const 
+	{
 		return m_Capacity; 
 	}
 
-	FORCEINLINE int32 GetCount() const 
-	{ 
+	FORCEINLINE SizeType GetCount() const
+	{
 		return m_Count;
 	}
 
 public:
-	// TODO: Implements operators 
+	TArray<T, AllocatorType>& operator=(TArray<T, AllocatorType>& other)
+	{
+		// Check if it's another array
+		if (this != &other)
+		{
+			if (m_Count > 0)
+			{
+				MemoryUtils::DestructItems(m_Allocator.GetData(), m_Count);
+				m_Allocator.Free();
+			}
+
+			m_Capacity	= other.m_Capacity;
+			m_Count		= other.m_Count;
+
+			m_Allocator.Allocate(m_Capacity);
+			MemoryUtils::CopyItems(other.m_Allocator.GetData(), m_Allocator.GetData(), m_Count);
+		}
+
+		return *this;
+	}
+
+	const T& operator[](SizeType index) const
+	{
+		return ElementAt(index);
+	}
+
+	T& operator[](SizeType index)
+	{
+		return ElementAt(index);
+	}
 
 private:
-	FORCEINLINE void EnsureLength(const int32 count)
+	FORCEINLINE void EnsureLength(const SizeType count)
 	{
 		if (m_Count + count >= m_Capacity)
 		{
-			const int32 totalCount = Math::Max(m_Capacity * 4, Math::RoundToPowerOf2(m_Count + count));
-			T* newArray = m_Allocator.Allocate(totalCount);
-
-			if (m_Data)
-			{
-				MemoryUtils::CopyItems(m_Data, newArray, totalCount);
-				m_Allocator.Free(m_Data);
-			}
-
-			m_Data = newArray;
-			m_Capacity = totalCount;
+			const SizeType newCapacity = Math::Max(m_Capacity * 4, Math::RoundToPowerOf2(m_Count + count));
+			
+			m_Allocator.Resize(m_Capacity, newCapacity);
+			m_Capacity = newCapacity;
 		}
 	}
 
 private:
 	AllocatorType m_Allocator;
 
-	T* 		m_Data;
-	int32	m_Capacity;
-	int32 	m_Count;
+	SizeType m_Capacity;
+	SizeType m_Count;
 };

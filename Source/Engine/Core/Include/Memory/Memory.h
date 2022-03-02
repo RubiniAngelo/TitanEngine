@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Platform/Memory.h"
 #include "CoreTypes.h"
 
 namespace MemoryUtils
@@ -73,4 +74,19 @@ namespace MemoryUtils
 	{
 		Memory::Copy(source, destination, count * sizeof(T));
 	}
+}
+
+// TODO: Implements our custom move
+template<typename T>
+FORCEINLINE CONSTEXPR typename TRemoveReference<T>::Type&& Move(T&& value) NOEXCEPT
+{
+	return std::move(value);
+}
+
+template<typename T, typename U>
+FORCEINLINE CONSTEXPR void Swap(T& lhs, U& rhs) NOEXCEPT
+{
+	T temp	= Move(lhs);
+	lhs		= Move(rhs);
+	rhs		= Move(temp);
 }

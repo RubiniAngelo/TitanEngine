@@ -5,6 +5,7 @@
 
 #include "AreTypesEqual.h"
 #include "RemoveCV.h"
+#include "RemoveReference.h"
 
 #include "IsEnum.h"
 #include "IsPOD.h"
