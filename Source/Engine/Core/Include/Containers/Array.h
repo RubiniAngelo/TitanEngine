@@ -127,6 +127,17 @@ public:
 	}
 
 public:
+	bool operator==(const TArray<T, AllocatorType>& other)
+	{
+		AssertMsg(false, "Not implemented yet!");
+		return false;
+	}
+
+	bool operator!=(const TArray<T, AllocatorType>& other)
+	{
+		return !(*this == other);
+	}
+
 	TArray<T, AllocatorType>& operator=(TArray<T, AllocatorType>& other)
 	{
 		// Check if it's another array
