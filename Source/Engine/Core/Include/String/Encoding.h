@@ -14,7 +14,7 @@
 class Encoding
 {
 public:
-    using UTF8Char = char;
+    using UTF8Char  = char;
     using UTF16Char = Char;
     using UTF32Char = char32_t;
 

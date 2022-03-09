@@ -17,8 +17,6 @@ namespace MemoryUtils
 		new (destination) T(*source);
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-
 	template<typename T>
 	FORCEINLINE typename TEnableIf< TIsBitwiseConstructible<T, T>::Value >::Type ConstructItems(const T* source, T* destination, uint32 count)
 	{
@@ -36,8 +34,6 @@ namespace MemoryUtils
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-
 	template<typename T>
 	FORCEINLINE typename TEnableIf< TIsTriviallyDestructible<T>::Value >::Type DestructItem(T* item)
 	{
@@ -49,8 +45,6 @@ namespace MemoryUtils
 	{
 		item->~T();
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	template<typename T>
 	FORCEINLINE typename TEnableIf< TIsTriviallyDestructible<T>::Value >::Type DestructItems(T* items, uint32 count)
@@ -66,8 +60,6 @@ namespace MemoryUtils
 			(items++)->~T();
 		}
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	template<typename T>
 	FORCEINLINE void CopyItems(const T* source, T* destination, uint32 count)
