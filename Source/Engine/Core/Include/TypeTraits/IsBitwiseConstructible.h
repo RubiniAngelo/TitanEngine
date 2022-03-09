@@ -22,8 +22,8 @@ struct TIsBitwiseConstructible
 	);
 
 	static_assert(
-		TAreTypesEqual<T, TRemoveCV<T>::Type>::Value &&
-		TAreTypesEqual<U, TRemoveCV<U>::Type>::Value,
+		TAreTypesEqual<T, typename TRemoveCV<T>::Type>::Value &&
+		TAreTypesEqual<U, typename TRemoveCV<U>::Type>::Value,
 
 		"TIsBitwiseConstructible cannot accept a qualified type"
 	);

@@ -3,6 +3,8 @@
 #include "Platform/Memory.h"
 #include "CoreTypes.h"
 
+#include <utility>
+
 namespace MemoryUtils
 {
 	template<typename T>
